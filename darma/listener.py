@@ -21,3 +21,4 @@ def start():
 		(clientsocket, address) = serversocket.accept()
 		zombies.append(Zombie())
 		clientsocket.send(b'HI')
+		clientsocket.close()
