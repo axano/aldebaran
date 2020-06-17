@@ -1,3 +1,7 @@
+import socket
+import time
+
+
 def start():
 	# create an INET, STREAMing socket
 	serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -6,7 +10,8 @@ def start():
 	# become a server socket
 	serversocket.listen(5)
 
-	while 1:
+	while True:
+		print("from listener")
 		# accept connections from outside
-    		(clientsocket, address) = serversocket.accept()
-		
+		(clientsocket, address) = serversocket.accept()
+		clientsocket.send(b'HI')

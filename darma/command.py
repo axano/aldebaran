@@ -1,3 +1,6 @@
+import time
+
 def start():
-	while 1:
-		print("test")
+	while True:
+		time.sleep(2)
+		print("from command.py")
