@@ -1,7 +1,7 @@
 import daemon
 import threading
-import command
 import listener
+import command
 
 """
 with daemon.DaemonContext():
