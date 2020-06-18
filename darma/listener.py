@@ -15,15 +15,21 @@ zombies = []
 
 
 def process_zombie_checkin(json_object, public_ip):
-	
+
 	json_object = json_object.replace("\\","\\\\")
 	data = json.loads(json_object)
 	uuid = data['uuid']
 	hostname = data['hostname']
 	username = data['username']
 	clm = data['clm']
-	zombies.append(Zombie(uuid, hostname, username, public_ip, clm))
-	
+	# If zombie is not registered, create it
+	# else update check in time
+	if not any(z.uuid == uuid for z in zombies):
+		zombies.append(Zombie(uuid, hostname, username, public_ip, clm))
+	else:
+		z = next((z for z in zombies if z.uuid == uuid), None)
+		z.update_check_in_time()
+
 
 
 class PostHandler(BaseHTTPRequestHandler):
@@ -63,31 +69,3 @@ def start():
     server = HTTPServer(('0.0.0.0', 443), PostHandler)
     server.serve_forever()
 
-
-
-
-
-
-
-
-
-"""
-	# create an INET, STREAMing socket
-	serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	# bind the socket to a public host, and a well-known port
-	serversocket.bind(('0.0.0.0', 443))
-	# become a server socket
-	serversocket.listen(5)
-
-
-	# Array with zombies
-	global zombies
-	zombies = []
-
-	while True:
-		print("from listener")
-		# accept connections from outside
-		(clientsocket, address) = serversocket.accept()
-		clientsocket.send(b'HI')
-		clientsocket.close()
-"""

