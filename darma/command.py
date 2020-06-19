@@ -9,10 +9,10 @@ import threading
 def list_zombies(socket):
 
 	x = PrettyTable()
-	x.field_names = ["id", "uuid", "hostname", "username", "IP", "constrained_language", "last_check_in"]
+	x.field_names = ["id", "uuid", "hostname", "username", "IP", "constrained_language","last output", "last_check_in"]
 	counter = 0
 	for z in listener.zombies:
-		x.add_row([counter, z.uuid, z.hostname, z.username, z.ip, z.clm, z.last_check_in])
+		x.add_row([counter, z.uuid, z.hostname, z.username, z.ip, z.clm, z.output_last_command,z.last_check_in])
 		counter = counter + 1
 
 	socket.send(x.get_string().encode())

@@ -32,7 +32,9 @@ def process_zombie_checkin(json_object, public_ip):
 	else:
 		z = next((z for z in zombies if z.uuid == uuid), None)
 		z.update_check_in_time()
-		print(z.command_cue)
+		output_last_command = data['output_last_command']
+		if not output_last_command == " ":
+			z.set_output_last_command(output_last_command)
 		if len(z.command_cue) > 0:
 			command = z.command_cue.pop()
 			json_response = '{"command":"'+command+'"}'
