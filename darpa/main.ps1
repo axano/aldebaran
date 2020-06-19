@@ -1,6 +1,6 @@
-while($true){
-$result = " "
 $command = " "
+$result = " "
+while($true){
 $username = whoami
 $hostname = hostname
 $is_clm_active = $ExecutionContext.SessionState.LanguageMode
