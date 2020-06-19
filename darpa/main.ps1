@@ -13,7 +13,7 @@ $json = @"
 			"hostname": "$hostname",
 			"clm": "$is_clm_active",
 			"last_boot_time": "$last_boot_time",
-			"result_of_last_command": "$result"
+			"output_last_command": "$result"
 }
 "@
 
