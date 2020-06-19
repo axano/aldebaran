@@ -57,7 +57,7 @@ class PostHandler(BaseHTTPRequestHandler):
         )
 
         # Echo back information about what was posted in the form
-        out.write(str(json))
+        out.write(str(json_object))
 
         # Disconnect our encoding wrapper from the underlying
         # buffer so that deleting the wrapper doesn't close
