@@ -61,6 +61,11 @@ class ClientThread(threading.Thread):
 
 	def run(self):
 		# bcrypt password hash
+		# Example hash creation (add \n to end of string)
+		# password = b"super secret password\n"
+		# Hash a password for the first time, with a randomly-generated salt
+		# hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+		# print(hashed)
 		hash = b'$2b$12$5f2z5D3nmeGV0bVOKmJlXuM0ncQXHu9IokJWe/XZZEVc4cxUV3sZS'
 		self.clientsocket.send(b'Please enter password: ')
 		password = self.clientsocket.recv(2048)
