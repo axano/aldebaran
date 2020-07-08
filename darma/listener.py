@@ -86,8 +86,8 @@ def start():
 	# Copy certs in same directory as liseter.py 
 	# certbot certonly --manual -d 220.ip-54-37-16.eu -d 220.ip-54-37-16.eu --register-unsafely-without-email
 	server.socket = ssl.wrap_socket (server.socket, 
-	        keyfile="key.pem", 
-        	certfile='cert.pem', server_side=True)
+	        keyfile="/opt/aldebaran/darma/key.pem", 
+        	certfile='/opt/aldebaran/darma/cert.pem', server_side=True)
 
 	server.serve_forever()
 
