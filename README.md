@@ -35,5 +35,22 @@ hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 print(hashed)
 ```
 
+To start server:
+
+```
+python3 darma/main.py
+```
+
+run agent on victim
+
+connect to server with netcat on port 51251
+
+```
+nc ip_of_server 51251
+```
+
+enter password and menu will pop up
+
+
 ## TODO
 ### Persistence
