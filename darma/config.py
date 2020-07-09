@@ -1,0 +1,3 @@
+domain = ""
+installation_path = ""
+

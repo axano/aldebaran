@@ -91,7 +91,10 @@ class PostHandler(BaseHTTPRequestHandler):
  			line_buffering=False,
 			write_through=True,
 		)
-		f = open("/opt/aldebaran/darpa/oneline.ps1","r")
+		if self.path == "/rev.txt":
+			f = open("/opt/aldebaran/darma/rev.txt","r")
+		else:
+			f = open("/opt/aldebaran/darpa/oneline.ps1","r")
 		out.write(str(f.read()))
 		# Disconnect our encoding wrapper from the underlying
 		# buffer so that deleting the wrapper doesn't close
