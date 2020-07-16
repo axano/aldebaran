@@ -1,5 +1,5 @@
 # General 
-domain = "220.ip-54-37-16.eu"
+domain = "dummy.domain.com"
 installation_path = "/opt/aldebaran/"
 daemonize = False
 
