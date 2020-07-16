@@ -29,7 +29,7 @@ letsencrypt stores certs in /etc/letsencrypt/live/$domain
 ## Change domain in config.py to match the ones of the certificates
 
 Change payload to point to your server url
-## change domain in :
+## Change domain in :
 ```
 darpa/main.ps1
 darpa/oneline.ps1
