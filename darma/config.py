@@ -22,5 +22,5 @@ log_file = '/var/log/aldebaran.log'
 ## Copy certs in same directory as listener.py
 ## certbot certonly --manual -d dummy.domain.com  --register-unsafely-without-email
 ## lifetime is forced to 90 days
-key_file = "/opt/aldebaran/darma/certificates/key.pem"
-cert_file = "/opt/aldebaran/darma/certificates/cert.pem"
+key_file = "/etc/letsencrypt/live/dummy.domain.com/privkey.pem"
+cert_file = "/etc/letsencrypt/live/dummy.domain.com/cert.pem"
