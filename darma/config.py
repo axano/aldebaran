@@ -14,7 +14,7 @@ daemonize = False
 bcrypt_password_hash = b'$2b$12$5f2z5D3nmeGV0bVOKmJlXuM0ncQXHu9IokJWe/XZZEVc4cxUV3sZS'
 
 server_bind_ip = "0.0.0.0"
-server_bind_port = 9999
+server_bind_port = 51251
 log_file = '/var/log/aldebaran.log'
 
 # Webserver
