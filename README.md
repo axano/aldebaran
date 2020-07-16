@@ -37,7 +37,7 @@ darpa/pers.ps1
 
 darma/rev.txt
 ```
-
+``` find ./ -type f -exec sed -i -e 's/dummy\.domain\.com/www\.your_domain\.com/g' {} \; ``` might help
 ## Change password of c2 server
 Change bcrpyt hash in "darma/config.py" with
 
